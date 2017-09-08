@@ -1,7 +1,6 @@
-class Users < ActiveRecord::Migration[5.1]
+class Logs < ActiveRecord::Migration[5.1]
   def change
-  	create_table :users do |t|
-  		t.string :name
+  	create_table :logs do |t|
   	end
   end
 end

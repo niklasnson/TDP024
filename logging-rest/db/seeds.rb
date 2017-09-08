@@ -1,2 +1,2 @@
-User.create(name: 'niklas')
-User.create(name: 'oskar')
+#User.create(name: 'niklas')
+#User.create(name: 'oskar')
