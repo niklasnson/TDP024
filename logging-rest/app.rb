@@ -3,7 +3,7 @@ require 'sinatra/activerecord'
 require 'json'
 
 set :port, 8060
-set :database, {adapter: "sqlite3", database: "persons.sqlite3"}
+set :database, {adapter: "sqlite3", database: "logging.sqlite3"}
 
 require "./models"
 
