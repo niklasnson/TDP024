@@ -8,8 +8,16 @@ set :port, 8060
 
 require "./models"
 
-get '/:level/:message' do
-  @log_item = LogItem.new(level: params[:level],  message: params[:message])
+post '/log' do
+
+  data = JSON.parse request.body.read
+  @log_item = LogItem.new(
+    log_id: 1,
+    level: params[:level],
+    short_desc: params[:short_desc],
+    long_desc: params[:long_desc],
+    timestamp: params[:timestamp]
+  )
   if @log_item.save
     [200,'OK']
   else
