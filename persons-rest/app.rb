@@ -14,12 +14,15 @@ end
 
 get %r{/find.(\d+)} do |key|
   @users = User.find_by(id: key)
-  @users.nil? ? 'null' : @users.to_json
+  @user = @users.nil? ? 'null' : @users.to_json
+  [200, @user]
 end
 
-get %r{/find.([A-Za-z ]+)} do |pattern|
+get %r{/find.([A-Za-z+]+)} do |pattern|
+  pattern.gsub!(/\+/, " ")
   @users = User.where(name: pattern)
-  @users.empty? ? 'null' : @users.to_json
+  @user = @users.empty? ? 'null' : @users.to_json
+  [200, @user]
 end
 
 

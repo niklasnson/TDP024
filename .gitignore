@@ -1,0 +1,15 @@
+/account-data-api/build/
+/account-data-test/build/
+/account-data-api/dist/
+/account-util/build/
+/account-util/dist/
+/account-data-impl-db/build/
+/account-data-impl-db/dist/
+/account-logic-api/build/
+/account-logic-api/dist/
+/account-logic-impl/dist/
+/account-logic-impl/build/
+/account-rest/build/
+/account-rest/dist/
+/account-logic-test/build/
+*.log

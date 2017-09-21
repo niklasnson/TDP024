@@ -1,29 +1,96 @@
 package se.liu.ida.tdp024.account.data.impl.db.entity;
 
+import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import se.liu.ida.tdp024.account.data.api.entity.Account;
+import se.liu.ida.tdp024.account.data.api.entity.Transaction;
 
 @Entity
 public class AccountDB implements Account {
+    
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
+    private long id;
     
-    @Override 
-    public int create() {
-        return 0; 
+    private long bankKey;
+    private long personKey;
+    private int holdings;
+    private String accountType;
+    
+    @OneToMany(mappedBy="account", targetEntity=TransactionDB.class) 
+    private List<Transaction> transactions;
+    
+    
+    @Override
+    public List<Transaction> getTransactions() {
+        return transactions;
+    }
+
+    @Override
+    public void setTransactions(List<Transaction> transactions) {
+        this.transactions = transactions;
     }
     
     @Override
-    public int getId() {
+    public long getId() {
         return id;
     }
     
     @Override 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
+    
+    @Override
+    public long getBankKey() {
+        return bankKey;
+    }
+    @Override
+    public void setBankKey(long id) {
+        bankKey = id;
+    }
+    
+    @Override
+    public long getPersonKey() {
+        return personKey;
+    }
+    @Override
+    public void setPersonKey(long id) {
+        personKey = id;
+    }
+    @Override
+    public int getHoldings() {
+        return holdings;
+    }
+    @Override
+    public void setHoldings(int val) {
+        holdings = val;
+    }
+    @Override 
+    public int alterHoldings(int amount) {
+        holdings += amount;
+        return holdings;
+    }
+    
+    @Override
+    public String getAccountType() {
+        return accountType;
+    }
+    
+    @Override
+    public void setAccountType(String account) {
+        accountType = account;
+    }
+    
+    @Override
+    public String toString() {
+        return "<AccountDB id:" + id + ", pKey:" + personKey + ", bKey:"+ bankKey +", hold:" + holdings + ">";
+    }
+
+    
 }
