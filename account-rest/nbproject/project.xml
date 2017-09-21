@@ -74,10 +74,6 @@
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
                 <library dirs="200">
-                    <file>${file.reference.jersey-guice-1.8.jar}</file>
-                    <path-in-war>WEB-INF/lib</path-in-war>
-                </library>
-                <library dirs="200">
                     <file>${file.reference.jersey-json-1.8.jar}</file>
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>

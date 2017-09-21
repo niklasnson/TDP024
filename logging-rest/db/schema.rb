@@ -10,15 +10,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170908085144) do
-
-  create_table "log_items", force: :cascade do |t|
-    t.integer "log_id"
-    t.integer "level"
-    t.string "message"
-  end
+ActiveRecord::Schema.define(version: 20170905083909) do
 
   create_table "logs", force: :cascade do |t|
+    t.integer "level"
+    t.string "short_desc"
+    t.string "long_desc"
+    t.string "timestamp"
   end
 
 end

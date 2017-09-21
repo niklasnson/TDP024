@@ -21,7 +21,7 @@ public class AccountDB implements Account {
     private long personKey;
     private int holdings;
     private String accountType;
-    
+    /*
     @OneToMany(mappedBy="account", targetEntity=TransactionDB.class) 
     private List<Transaction> transactions;
     
@@ -35,7 +35,7 @@ public class AccountDB implements Account {
     public void setTransactions(List<Transaction> transactions) {
         this.transactions = transactions;
     }
-    
+    */
     @Override
     public long getId() {
         return id;

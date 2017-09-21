@@ -4,8 +4,9 @@ import java.io.Serializable;
 import java.util.List;
 
 public interface Account extends Serializable {
-    public List<Transaction> getTransactions();
+    /*public List<Transaction> getTransactions();
     public void setTransactions(List<Transaction> transactions);
+    */
     public long getId(); 
     public void setId(long id);
     public String getAccountType(); 

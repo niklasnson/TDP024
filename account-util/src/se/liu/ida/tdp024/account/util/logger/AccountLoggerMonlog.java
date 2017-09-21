@@ -11,7 +11,7 @@ public class AccountLoggerMonlog implements AccountLogger {
     //-- Set your API key here ----------//
     private static final String apikey = "";
     //-----------------------------------//
-    private static final String endpoint = "http://www.ida.liu.se/~TDP024/monlog/api/log/";
+    private static final String endpoint = "http://localhost:8090/log";
 
     @Override
     public void log(Throwable throwable) {
@@ -23,7 +23,7 @@ public class AccountLoggerMonlog implements AccountLogger {
 
         httpHelper.postJSON(
                 endpoint,
-                new String[]{"api_key", apikey, "format", "json"},
+                new String[]{},
                 new String[]{
             "severity", "5",
             "short_desc", throwable.getMessage(),
@@ -33,13 +33,13 @@ public class AccountLoggerMonlog implements AccountLogger {
     }
 
     @Override
-    public void log(TodoLoggerLevel todoLoggerLevel, String shortMessage, String longMessage) {
+    public void log(LoggerLevel loggerLevel, String shortMessage, String longMessage) {
 
         httpHelper.postJSON(
                 endpoint,
-                new String[]{"api_key", apikey, "format", "json"},
+                new String[]{}, //"api_key", apikey, "format", "json"
                 new String[]{
-            "severity", todoLoggerLevel.ordinal() + "",
+            "severity", loggerLevel.ordinal() + "",
             "short_desc", shortMessage,
             "long_desc", longMessage,
             "timestamp", new Date().getTime() + ""});

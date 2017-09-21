@@ -13,3 +13,4 @@
 /account-rest/dist/
 /account-logic-test/build/
 *.log
+/account-xfinal-test/build/

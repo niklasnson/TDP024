@@ -1,5 +1,6 @@
 package se.liu.ida.tdp024.account.data.impl.db.facade;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.ServiceConfigurationError;
 import javax.persistence.EntityManager;
@@ -13,6 +14,9 @@ import javax.persistence.Query;
 import se.liu.ida.tdp024.account.data.api.entity.Transaction;
 import se.liu.ida.tdp024.account.data.api.facade.TransactionEntityFacade;
 import se.liu.ida.tdp024.account.data.impl.db.entity.AccountDataException;
+import se.liu.ida.tdp024.account.util.logger.AccountLogger;
+import se.liu.ida.tdp024.account.util.logger.AccountLoggerImpl;
+import se.liu.ida.tdp024.account.util.logger.AccountLoggerMonlog;
 
 public class AccountEntityFacadeDB implements AccountEntityFacade {
     
@@ -21,9 +25,16 @@ public class AccountEntityFacadeDB implements AccountEntityFacade {
     private final String C_OK = "OK";
     
     @Override
-    public long create (String accountType, long nameKey, long bankKey) {
-
+    public long create (String accountType, long nameKey, long bankKey) throws AccountDataException {
+        
         EntityManager em = EMF.getEntityManager();
+        
+        if (!accountType.equals("CHECK") || !accountType.equals("SAVINGS") ) {
+            AccountLogger logger = new AccountLoggerMonlog(); 
+            logger.log(AccountLogger.LoggerLevel.INFO, "Litet meddelande", "Elefant!");
+
+            throw new AccountDataException("accountType is invalid");
+        }
         
         try {
             em.getTransaction().begin();
@@ -58,7 +69,7 @@ public class AccountEntityFacadeDB implements AccountEntityFacade {
         EntityManager em = EMF.getEntityManager();
         Query q = em.createQuery(
                 "SELECT a FROM AccountDB a WHERE a.personKey = :id",
-                Account.class)
+                AccountDB.class)
                 .setParameter("id", id);
         return q.getResultList(); 
     }

@@ -7,6 +7,7 @@ import java.util.List;
 import se.liu.ida.tdp024.account.data.api.entity.Account;
 import se.liu.ida.tdp024.account.data.api.entity.Transaction;
 import se.liu.ida.tdp024.account.data.api.facade.AccountEntityFacade;
+import se.liu.ida.tdp024.account.data.impl.db.entity.AccountDataException;
 import se.liu.ida.tdp024.account.logic.api.facade.AccountLogicFacade;
 import se.liu.ida.tdp024.account.util.http.HTTPHelper;
 import se.liu.ida.tdp024.account.util.http.HTTPHelperImpl;
@@ -34,7 +35,7 @@ public class AccountLogicFacadeImpl implements AccountLogicFacade {
         }
         String answerJson = http.get("http://localhost:8060/find." + name);
         PersonDTO[] persons = ajs.fromJson(answerJson, PersonDTO[].class);
-        if (persons.length == 0) {
+        if (persons == null || persons.length == 0) {
             throw new AccountLogicException("Person not included in response.");
         } 
         return persons[0].getId();
@@ -60,17 +61,22 @@ public class AccountLogicFacadeImpl implements AccountLogicFacade {
 
     @Override
     public long create(String accountType, String personName, String bankName)
-            throws AccountLogicException, UnsupportedEncodingException {
+            throws AccountLogicException, UnsupportedEncodingException, AccountDataException {
         try {
            long personId = getPersonId(personName);
            long bankId = getBankId(bankName);
            
-           return accountEntityFacade.create(accountType,personId,bankId);
+           return accountEntityFacade.create(accountType,bankId,personId);
+        }
+        catch (AccountDataException e) {
+            throw e;
         }
         catch (AccountLogicException e) {
             throw e;
         } catch (UnsupportedEncodingException e) {
             throw e;
+        } catch (Exception e) {
+            throw new AccountLogicException("Caught a exception e: " + e);
         }
     }
 
@@ -78,7 +84,9 @@ public class AccountLogicFacadeImpl implements AccountLogicFacade {
     public List<Account> find(String personName) 
     throws AccountLogicException, UnsupportedEncodingException {        
         try {
-            return accountEntityFacade.find(getPersonId(personName));
+            long id = getPersonId(personName);
+            System.out.println("=====> Found personId: "+id);
+            return accountEntityFacade.find(id);
         } catch (AccountLogicException e) {
             System.out.println(e);
             throw e;
