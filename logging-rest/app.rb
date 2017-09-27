@@ -9,13 +9,12 @@ set :port, 8090
 require "./models"
 
 post '/log' do
-
-  data = JSON.parse request.body.read
+  payload = JSON.parse request.body.read
   @log = Log.new(
-    level: params[:level],
-    short_desc: params[:short_desc],
-    long_desc: params[:long_desc],
-    timestamp: params[:timestamp]
+    severity: payload["severity"],
+    short_desc: payload["short_desc"],
+    long_desc: payload["long_desc"],
+    timestamp: payload["timestamp"]
   )
   if @log.save
     [200,'OK']
