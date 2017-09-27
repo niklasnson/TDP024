@@ -11,5 +11,5 @@ public interface AccountLogicFacade {
     public List<Account> find(String personName) throws Exception, UnsupportedEncodingException;
     public String debit(long id, int amount);
     public String credit(long id, int amount);
-    public List<Transaction> transactions(long id);
+    public List<Transaction> transactions(long id) throws Exception;
 }

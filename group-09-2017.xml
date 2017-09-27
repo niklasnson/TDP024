@@ -1,0 +1,178 @@
+
+
+<!-- replace XX in the project:name attribute and the file name with the group number mentioned in your username, for example b8 -->
+
+<project name="group-09-2017" default="default" xmlns:jacoco="antlib:org.jacoco.ant" xmlns:sonar="antlib:org.sonar.ant">
+
+	<!-- Replace "your_username" and "your_password" with the username and password  you have received -->	
+	<property name="sonar.login" value="group-09-2017" />
+	<property name="sonar.password" value="FKJK4t2N" />
+
+	<!-- Default -->
+	<target name="default">
+		<delete dir="jacoco"/>
+		<mkdir dir="jacoco" />
+		<mkdir dir="jacoco/test" />
+		<mkdir dir="jacoco/report" />
+		<antcall target="jacoco" />
+		<antcall target="sonar" />
+	</target>
+
+	<!-- Sonar --> 
+	<target name="sonar">
+    	<property name="sonar.java.coveragePlugin" value="jacoco" />
+	    <property name="sonar.dynamicAnalysis" value="reuseReports" />
+		<property name="sonar.surefire.reportsPath" value="${jacoco.test.dir}" />
+		<property name="sonar.jacoco.reportPath" value="${jacoco.exec.file}" />
+	    <sonar:sonar />
+	</target>
+
+    
+    <!-- JaCoCo -->
+    <target name="jacoco">
+
+    	<subant target="dist">
+      		<fileset dir="account-rest" includes="build.xml"/>
+    	</subant>
+		<subant target="compile-test">
+      		<fileset dir="account-data-test" includes="build.xml"/>
+    	</subant>
+    	<subant target="compile-test">
+      		<fileset dir="account-logic-test" includes="build.xml"/>
+    	</subant>
+    	<subant target="compile-test">
+      		<fileset dir="account-rest" includes="build.xml"/>
+    	</subant>
+
+
+    	<jacoco:coverage destfile="${jacoco.exec.file}">
+
+			<junit fork="yes" dir="${basedir}" failureProperty="test.failed">
+
+				<classpath refid="binaries" />
+				<classpath refid="jars" />
+
+				<formatter type="xml" />
+
+				<batchtest todir="${jacoco.test.dir}">
+					<fileset dir="account-data-test/test">
+			        	<include name="**/*.java" />
+			    	</fileset>
+			    	<fileset dir="account-logic-test/test">
+			        	<include name="**/*.java" />
+			    	</fileset>
+			    	<fileset dir="account-rest/test">
+			        	<include name="**/*.java" />
+			    	</fileset>
+				</batchtest>
+			</junit>
+		</jacoco:coverage>
+
+		<jacoco:report>
+                        
+		    <executiondata>
+		        <file file="${jacoco.exec.file}"/>
+		    </executiondata>
+                        
+		    <structure name="${ant.project.name}">
+		        <classfiles>
+		            <fileset dir="account-data-api/build/classes"/>
+		            <fileset dir="account-data-impl-db/build/classes"/>
+		            <fileset dir="account-logic-api/build/classes"/>
+		            <fileset dir="account-logic-impl/build/classes"/>
+		            <fileset dir="account-rest/build/web/WEB-INF/classes"/>
+		        </classfiles>
+		        <sourcefiles encoding="UTF-8">
+		            <fileset dir="account-data-api/src"/>
+		            <fileset dir="account-data-impl-db/src"/>
+		            <fileset dir="account-logic-api/src"/>
+		            <fileset dir="account-logic-impl/src"/>
+		            <fileset dir="account-rest/src/java"/>
+		        </sourcefiles>
+		    </structure>
+                        
+    		<xml destfile="${jacoco.report.dir}/jacoco.xml"/>
+                        
+		</jacoco:report>
+
+	</target>
+
+
+	<!-- JaCoCo -->
+ 	<taskdef uri="antlib:org.jacoco.ant" resource="org/jacoco/ant/antlib.xml">
+        <classpath path="lib/jacocoant.jar"/>
+    </taskdef>
+
+    <property name="jacoco.report.dir" value="jacoco/report" />
+    <property name="jacoco.test.dir" value="jacoco/test" />
+    <property name="jacoco.exec.file" value="jacoco/jacoco.exec" />
+
+
+     <path id="binaries">
+		<pathelement path="account-data-api/build/classes" />
+		<pathelement path="account-data-impl-db/build/classes" />
+		<pathelement path="account-logic-api/build/classes" />
+		<pathelement path="account-logic-impl/build/classes" />
+		<pathelement path="account-rest/build/web/WEB-INF/classes" />
+		<pathelement path="account-util/build/classes" />
+		<pathelement path="account-data-test/build/test/classes" />
+		<pathelement path="account-logic-test/build/test/classes" />
+		<pathelement path="account-rest/build/test/classes" />
+	</path>
+
+    <path id="jars">
+		<fileset dir="lib">
+            <include name="**/*.jar" />
+        </fileset>
+    </path>
+
+
+	<!-- Sonar -->
+	<taskdef uri="antlib:org.sonar.ant" resource="org/sonar/ant/antlib.xml">
+	    	<classpath path="lib/sonar-ant-task-*.jar" />
+	</taskdef>
+
+	<property name="sonar.host.url" value="http://www.ida.liu.se/~TDP024/sonar" />
+
+	<property name="sonar.jdbc.url" value="jdbc:mysql://db.ida.liu.se:3306/tdp024_sonar?useUnicode=true&amp;characterEncoding=utf8" />
+	<property name="sonar.projectVersion" value="1.0" />
+	<property name="sonar.jdbc.username" value="tdp024_sonar" />
+	<property name="sonar.jdbc.password" value="sonar_17f4" />
+	 
+	
+	<property name="sonar.projectKey" value="${ant.project.name}" />
+	<property name="sonar.projectName" value="${ant.project.name}" />
+	<property name="sonar.language" value="java" />
+
+	<property name="sonar.sources" value=
+		"
+		account-data-api/src,
+		account-data-impl-db/src,
+		account-logic-api/src,
+		account-logic-impl/src,
+		account-rest/src/java
+		" 
+		/>
+
+	<property name="sonar.tests" value=
+			"
+			account-data-test/test,
+			account-logic-test/test,
+			account-rest/test
+			"
+			/>
+	
+	<property name="sonar.binaries" value=
+		"
+		account-data-api/build/classes,
+		account-data-impl-db/build/classes,
+		account-logic-api/build/classes,
+		account-logic-impl/build/classes,
+		account-rest/build/web/WEB-INF/classes,
+		account-util/build/classes
+		" 
+		/>
+
+	<property name="sonar.libraries" value="lib/*.jar,lib/jaxb/*.jar,lib/jersey/*.jar" />
+    
+</project>

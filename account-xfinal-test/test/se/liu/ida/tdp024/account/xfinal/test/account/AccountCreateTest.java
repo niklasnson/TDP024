@@ -14,68 +14,67 @@ public class AccountCreateTest {
 
     @Test
     public void createSuccess() {
-
         {
-            String name = "Marcus Bendtsen";
+            String person = "3";
             String bank = "SWEDBANK";
             String accountType = "SAVINGS";
-            String response = httpHelper.get(FinalConstants.ENDPOINT + "account/create/", "name", name, "bank", bank, "accounttype", accountType);
+            String response = httpHelper.get(FinalConstants.ENDPOINT + "account/create/", "person", person, "bank", bank, "accounttype", accountType);
             Assert.assertEquals("OK", response);
         }
         {
-            String name = "Marcus Bendtsen";
+            String person = "3";
             String bank = "SWEDBANK";
             String accountType = "SAVINGS";
-            String response = httpHelper.get(FinalConstants.ENDPOINT + "account/create/", "name", name, "bank", bank, "accounttype", accountType);
+            String response = httpHelper.get(FinalConstants.ENDPOINT + "account/create/", "person", person, "bank", bank, "accounttype", accountType);
             Assert.assertEquals("OK", response);
         }
         {
-            String name = "Marcus Bendtsen";
+            String person = "3";
             String bank = "SWEDBANK";
             String accountType = "CHECK";
-            String response = httpHelper.get(FinalConstants.ENDPOINT + "account/create/", "name", name, "bank", bank, "accounttype", accountType);
+            String response = httpHelper.get(FinalConstants.ENDPOINT + "account/create/", "person", person, "bank", bank, "accounttype", accountType);
             Assert.assertEquals("OK", response);
         }
         {
-            String name = "Jakob Pogulis";
+            String person = "1";
             String bank = "NORDEA";
             String accountType = "SAVINGS";
-            String response = httpHelper.get(FinalConstants.ENDPOINT + "account/create/", "name", name, "bank", bank, "accounttype", accountType);
+            String response = httpHelper.get(FinalConstants.ENDPOINT + "account/create/", "person", person, "bank", bank, "accounttype", accountType);
             Assert.assertEquals("OK", response);
         }
         {
-            String name = "Jakob Pogulis";
+            String person = "1";
             String bank = "NORDEA";
             String accountType = "CHECK";
-            String response = httpHelper.get(FinalConstants.ENDPOINT + "account/create/", "name", name, "bank", bank, "accounttype", accountType);
+            String response = httpHelper.get(FinalConstants.ENDPOINT + "account/create/", "person", person, "bank", bank, "accounttype", accountType);
             Assert.assertEquals("OK", response);
         }
         {
-            String name = "Jakob Pogulis";
+            String person = "1";
             String bank = "SWEDBANK";
             String accountType = "CHECK";
-            String response = httpHelper.get(FinalConstants.ENDPOINT + "account/create/", "name", name, "bank", bank, "accounttype", accountType);
+            String response = httpHelper.get(FinalConstants.ENDPOINT + "account/create/", "person", person, "bank", bank, "accounttype", accountType);
             Assert.assertEquals("OK", response);
         }
         {
-            String name = "Zorro";
+            String person = "4";
             String bank = "SWEDBANK";
             String accountType = "SAVINGS";
-            String response = httpHelper.get(FinalConstants.ENDPOINT + "account/create/", "name", name, "bank", bank, "accounttype", accountType);
+            String response = httpHelper.get(FinalConstants.ENDPOINT + "account/create/", "person", person, "bank", bank, "accounttype", accountType);
             Assert.assertEquals("OK", response);
         }
         {
-            String name = "Zorro";
+            String person = "4";
             String bank = "JPMORGAN";
             String accountType = "SAVINGS";
-            String response = httpHelper.get(FinalConstants.ENDPOINT + "account/create/", "name", name, "bank", bank, "accounttype", accountType);
+            String response = httpHelper.get(FinalConstants.ENDPOINT + "account/create/", "person", person, "bank", bank, "accounttype", accountType);
             Assert.assertEquals("OK", response);
         }
         {
-            String name = "Zorro";
+            String person = "4";
             String bank = "NORDNET";
             String accountType = "CHECK";
-            String response = httpHelper.get(FinalConstants.ENDPOINT + "account/create/", "name", name, "bank", bank, "accounttype", accountType);
+            String response = httpHelper.get(FinalConstants.ENDPOINT + "account/create/", "person", person, "bank", bank, "accounttype", accountType);
             Assert.assertEquals("OK", response);
         }
 
@@ -84,15 +83,15 @@ public class AccountCreateTest {
     @Test
     public void createSuccessAllCombos() {
 
-        List<String> personNames = new ArrayList<String>();
+        List<String> personIds = new ArrayList<String>();
         List<String> bankNames = new ArrayList<String>();
         List<String> accountTypes = new ArrayList<String>();
 
-        personNames.add("Jakob Pogulis");
-        personNames.add("Xena");
-        personNames.add("Marcus Bendtsen");
-        personNames.add("Zorro");
-        personNames.add("Q");
+        personIds.add("1");
+        personIds.add("2");
+        personIds.add("3");
+        personIds.add("4");
+        personIds.add("5");
 
         bankNames.add("SWEDBANK");
         bankNames.add("IKANOBANKEN");
@@ -107,10 +106,10 @@ public class AccountCreateTest {
         accountTypes.add("CHECK");
         accountTypes.add("SAVINGS");
 
-        for (String personName : personNames) {
+        for (String personId : personIds) {
             for (String bankName : bankNames) {
                 for (String accountType : accountTypes) {
-                    String response = httpHelper.get(FinalConstants.ENDPOINT + "account/create/", "name", personName, "bank", bankName, "accounttype", accountType);
+                    String response = httpHelper.get(FinalConstants.ENDPOINT + "account/create/", "person", personId, "bank", bankName, "accounttype", accountType);
                     Assert.assertEquals("OK", response);
                 }
             }
@@ -122,133 +121,133 @@ public class AccountCreateTest {
     public void createFailure() {
 
         {
-            String name = "Marcus Bendtsen";
+            String person = "3";
             String bank = "SWEDBANK";
             String accountType = "CREDITCARD";
-            String response = httpHelper.get(FinalConstants.ENDPOINT + "account/create/", "name", name, "bank", bank, "accounttype", accountType);
+            String response = httpHelper.get(FinalConstants.ENDPOINT + "account/create/", "person", person, "bank", bank, "accounttype", accountType);
             Assert.assertEquals("FAILED", response);
         }
         {
-            String name = "Marcus";
+            String person = "01219210";
             String bank = "SWEDBANK";
             String accountType = "CHECK";
-            String response = httpHelper.get(FinalConstants.ENDPOINT + "account/create/", "name", name, "bank", bank, "accounttype", accountType);
+            String response = httpHelper.get(FinalConstants.ENDPOINT + "account/create/", "person", person, "bank", bank, "accounttype", accountType);
             Assert.assertEquals("FAILED", response);
         }
         {
-            String name = "Marcus Bendtsen";
+            String person = "3";
             String bank = "LEHMAN";
             String accountType = "CHECK";
-            String response = httpHelper.get(FinalConstants.ENDPOINT + "account/create/", "name", name, "bank", bank, "accounttype", accountType);
+            String response = httpHelper.get(FinalConstants.ENDPOINT + "account/create/", "person", person, "bank", bank, "accounttype", accountType);
             Assert.assertEquals("FAILED", response);
         }
         {
-            String name = "Marcus Bendtsen";
+            String person = "3";
             String bank = "";
             String accountType = "CHECK";
-            String response = httpHelper.get(FinalConstants.ENDPOINT + "account/create/", "name", name, "bank", bank, "accounttype", accountType);
+            String response = httpHelper.get(FinalConstants.ENDPOINT + "account/create/", "person", person, "bank", bank, "accounttype", accountType);
             Assert.assertEquals("FAILED", response);
         }
         {
-            String name = "Marcus Bendtsen";
+            String person = "3";
             String bank = "SWEDBANK";
             String accountType = "";
-            String response = httpHelper.get(FinalConstants.ENDPOINT + "account/create/", "name", name, "bank", bank, "accounttype", accountType);
+            String response = httpHelper.get(FinalConstants.ENDPOINT + "account/create/", "person", person, "bank", bank, "accounttype", accountType);
             Assert.assertEquals("FAILED", response);
         }
         {
-            String name = "Marcus Bendtsen";
+            String person = "3";
             String bank = "SWEDBANK";
             String accountType = "";
-            String response = httpHelper.get(FinalConstants.ENDPOINT + "account/create/", "name", name, "bank", bank, "accounttype", accountType);
+            String response = httpHelper.get(FinalConstants.ENDPOINT + "account/create/", "person", person, "bank", bank, "accounttype", accountType);
             Assert.assertEquals("FAILED", response);
         }
         {
-            String name = "";
+            String person = "";
             String bank = "SWEDBANK";
             String accountType = "CHECK";
-            String response = httpHelper.get(FinalConstants.ENDPOINT + "account/create/", "name", name, "bank", bank, "accounttype", accountType);
+            String response = httpHelper.get(FinalConstants.ENDPOINT + "account/create/", "person", person, "bank", bank, "accounttype", accountType);
             Assert.assertEquals("FAILED", response);
         }
         {
-            String name = "";
+            String person = "";
             String bank = "SWEDBANK";
             String accountType = "CHECK";
-            String response = httpHelper.get(FinalConstants.ENDPOINT + "account/create/", "name", name, "bank", bank, "accounttype", accountType);
+            String response = httpHelper.get(FinalConstants.ENDPOINT + "account/create/", "person", person, "bank", bank, "accounttype", accountType);
             Assert.assertEquals("FAILED", response);
         }
         {
-            String name = "";
+            String person = "";
             String bank = "";
             String accountType = "CHECK";
-            String response = httpHelper.get(FinalConstants.ENDPOINT + "account/create/", "name", name, "bank", bank, "accounttype", accountType);
+            String response = httpHelper.get(FinalConstants.ENDPOINT + "account/create/", "person", person, "bank", bank, "accounttype", accountType);
             Assert.assertEquals("FAILED", response);
         }
         {
-            String name = "";
+            String person = "";
             String bank = "";
             String accountType = "";
-            String response = httpHelper.get(FinalConstants.ENDPOINT + "account/create/", "name", name, "bank", bank, "accounttype", accountType);
+            String response = httpHelper.get(FinalConstants.ENDPOINT + "account/create/", "person", person, "bank", bank, "accounttype", accountType);
             Assert.assertEquals("FAILED", response);
         }
         {
-            String name = "";
+            String person = "";
             String bank = "";
             String accountType = "CHECK";
-            String response = httpHelper.get(FinalConstants.ENDPOINT + "account/create/", "name", name, "bank", bank, "accounttype", accountType);
+            String response = httpHelper.get(FinalConstants.ENDPOINT + "account/create/", "person", person, "bank", bank, "accounttype", accountType);
             Assert.assertEquals("FAILED", response);
         }
         {
-            String name = "";
+            String person = "";
             String bank = "";
             String accountType = "CREDITCARD";
-            String response = httpHelper.get(FinalConstants.ENDPOINT + "account/create/", "name", name, "bank", bank, "accounttype", accountType);
+            String response = httpHelper.get(FinalConstants.ENDPOINT + "account/create/", "person", person, "bank", bank, "accounttype", accountType);
             Assert.assertEquals("FAILED", response);
         }
         {
-            String name = "Marcus Bendtsen";
+            String person = "3";
             String bank = "SWEDBANK";
             String accountType = "SAVING"; //It should be SAVINGS
-            String response = httpHelper.get(FinalConstants.ENDPOINT + "account/create/", "name", name, "bank", bank, "accounttype", accountType);
+            String response = httpHelper.get(FinalConstants.ENDPOINT + "account/create/", "person", person, "bank", bank, "accounttype", accountType);
             Assert.assertEquals("FAILED", response);
         }
         {
-            String name = "Marcus Bendtsen";
+            String person = "3";
             String bank = "SWEDBANK";
             String accountType = "SAVINGS";
             String response = httpHelper.get(FinalConstants.ENDPOINT + "account/create/", "bank", bank, "accounttype", accountType);
             Assert.assertEquals("FAILED", response);
         }
         {
-            String name = "Marcus Bendtsen";
+            String person = "3";
             String bank = "SWEDBANK";
             String accountType = "SAVINGS";
-            String response = httpHelper.get(FinalConstants.ENDPOINT + "account/create/", "name", name, "accounttype", accountType);
+            String response = httpHelper.get(FinalConstants.ENDPOINT + "account/create/", "person", person, "accounttype", accountType);
             Assert.assertEquals("FAILED", response);
         }
         {
-            String name = "Marcus Bendtsen";
+            String person = "3";
             String bank = "SWEDBANK";
             String accountType = "SAVINGS";
-            String response = httpHelper.get(FinalConstants.ENDPOINT + "account/create/", "name", name, "bank", bank);
+            String response = httpHelper.get(FinalConstants.ENDPOINT + "account/create/", "person", person, "bank", bank);
             Assert.assertEquals("FAILED", response);
         }
         {
-            String name = "Marcus Bendtsen";
+            String person = "3";
             String bank = "SWEDBANK";
             String accountType = "SAVINGS";
-            String response = httpHelper.get(FinalConstants.ENDPOINT + "account/create/", "name", name);
+            String response = httpHelper.get(FinalConstants.ENDPOINT + "account/create/", "person", person);
             Assert.assertEquals("FAILED", response);
         }
         {
-            String name = "Marcus Bendtsen";
+            String person = "3";
             String bank = "SWEDBANK";
             String accountType = "SAVINGS";
             String response = httpHelper.get(FinalConstants.ENDPOINT + "account/create/", "bank", bank);
             Assert.assertEquals("FAILED", response);
         }
         {
-            String name = "Marcus Bendtsen";
+            String person = "3";
             String bank = "SWEDBANK";
             String accountType = "SAVINGS";
             String response = httpHelper.get(FinalConstants.ENDPOINT + "account/create/", "accounttype", accountType);
@@ -256,7 +255,7 @@ public class AccountCreateTest {
         }
 
         {
-            String name = "Marcus Bendtsen";
+            String person = "3";
             String bank = "SWEDBANK";
             String accountType = "SAVINGS";
             String response = httpHelper.get(FinalConstants.ENDPOINT + "account/create/");
@@ -266,24 +265,24 @@ public class AccountCreateTest {
 
         /* Wrong endpoint (i.e. incorrect request) */
         {
-            String name = "Marcus Bendtsen";
+            String person = "3";
             String bank = "SWEDBANK";
             String accountType = "SAVINGS";
-            String response = httpHelper.get(FinalConstants.ENDPOINT + "create/", "name", name, "bank", bank, "accounttype", accountType);
+            String response = httpHelper.get(FinalConstants.ENDPOINT + "create/", "person", person, "bank", bank, "accounttype", accountType);
             Assert.assertEquals("", response);
         }
         {
-            String name = "Marcus Bendtsen";
+            String person = "3";
             String bank = "SWEDBANK";
             String accountType = "SAVINGS";
-            String response = httpHelper.get(FinalConstants.ENDPOINT + "/", "name", name, "bank", bank, "accounttype", accountType);
+            String response = httpHelper.get(FinalConstants.ENDPOINT + "/", "person", person, "bank", bank, "accounttype", accountType);
             Assert.assertEquals("", response);
         }
         {
-            String name = "Marcus Bendtsen";
+            String person = "3";
             String bank = "SWEDBANK";
             String accountType = "SAVINGS";
-            String response = httpHelper.get(FinalConstants.ENDPOINT + "account/account/create/", "name", name, "bank", bank, "accounttype", accountType);
+            String response = httpHelper.get(FinalConstants.ENDPOINT + "account/account/create/", "person", person, "bank", bank, "accounttype", accountType);
             Assert.assertEquals("", response);
         }
 

@@ -20,29 +20,29 @@ public class AccountFindTest {
     public void testFind() {
         
         {
-            String name = "Marcus Bendtsen";
+            String person = "3";
             String bank = "SWEDBANK";
             String accountType = "SAVINGS";
-            String response = httpHelper.get(FinalConstants.ENDPOINT + "account/create/", "name", name, "bank", bank, "accounttype", accountType);
+            String response = httpHelper.get(FinalConstants.ENDPOINT + "account/create/", "person", person, "bank", bank, "accounttype", accountType);
             Assert.assertEquals("OK", response);
         }
         {
-            String name = "Marcus Bendtsen";
+            String person = "3";
             String bank = "NORDEA";
             String accountType = "SAVINGS";
-            String response = httpHelper.get(FinalConstants.ENDPOINT + "account/create/", "name", name, "bank", bank, "accounttype", accountType);
+            String response = httpHelper.get(FinalConstants.ENDPOINT + "account/create/", "person", person, "bank", bank, "accounttype", accountType);
             Assert.assertEquals("OK", response);
         }
         {
-            String name = "Marcus Bendtsen";
+            String person = "3";
             String bank = "JPMORGAN";
             String accountType = "CHECK";
-            String response = httpHelper.get(FinalConstants.ENDPOINT + "account/create/", "name", name, "bank", bank, "accounttype", accountType);
+            String response = httpHelper.get(FinalConstants.ENDPOINT + "account/create/", "person", person, "bank", bank, "accounttype", accountType);
             Assert.assertEquals("OK", response);
         }
         
         
-        String json = httpHelper.get(FinalConstants.ENDPOINT + "account/find/name", "name", "Marcus Bendtsen");
+        String json = httpHelper.get(FinalConstants.ENDPOINT + "account/find/person", "person", "3");
         AccountDTO[] accountDTos = jsonSerializer.fromJson(json, AccountDTO[].class);
         
         Assert.assertTrue(accountDTos.length > 2);
@@ -54,7 +54,7 @@ public class AccountFindTest {
     public void testFindFailure() {
         
         
-        String json = httpHelper.get(FinalConstants.ENDPOINT + "account/find/name", "name", "Marcus");
+        String json = httpHelper.get(FinalConstants.ENDPOINT + "account/find/person", "person", "01219210");
         
         Assert.assertEquals("[]", json);
         

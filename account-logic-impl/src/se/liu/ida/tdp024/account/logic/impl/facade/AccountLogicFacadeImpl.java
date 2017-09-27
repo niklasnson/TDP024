@@ -7,7 +7,6 @@ import java.util.List;
 import se.liu.ida.tdp024.account.data.api.entity.Account;
 import se.liu.ida.tdp024.account.data.api.entity.Transaction;
 import se.liu.ida.tdp024.account.data.api.facade.AccountEntityFacade;
-import se.liu.ida.tdp024.account.data.impl.db.entity.AccountDataException;
 import se.liu.ida.tdp024.account.logic.api.facade.AccountLogicFacade;
 import se.liu.ida.tdp024.account.util.http.HTTPHelper;
 import se.liu.ida.tdp024.account.util.http.HTTPHelperImpl;
@@ -25,7 +24,20 @@ public class AccountLogicFacadeImpl implements AccountLogicFacade {
     }
     
     private long getPersonId(String personName)
-            throws AccountLogicException, UnsupportedEncodingException {
+            throws Exception {
+        if (personName.equals("")) {
+            throw new Exception("personName can't be blank");
+        }
+        
+        // Shall we expect 1 person or a list of persons?
+        boolean isKey = true;
+        try {
+            Integer.parseInt(personName);
+        }
+        catch (NumberFormatException e) {
+            isKey = false;
+        }
+        // URLencode 
         String name;
         try {
             name = URLEncoder.encode(personName,"UTF-8");
@@ -33,64 +45,66 @@ public class AccountLogicFacadeImpl implements AccountLogicFacade {
         catch (UnsupportedEncodingException e) {
             throw e;
         }
+        
         String answerJson = http.get("http://localhost:8060/find." + name);
-        PersonDTO[] persons = ajs.fromJson(answerJson, PersonDTO[].class);
-        if (persons == null || persons.length == 0) {
-            throw new AccountLogicException("Person not included in response.");
+        
+        PersonDTO person = null;
+        if (isKey) {
+            person = ajs.fromJson(answerJson, PersonDTO.class);
+        } else {
+            PersonDTO[] persons = ajs.fromJson(answerJson, PersonDTO[].class);
+            person = persons[0];
+        }
+        
+        if (person == null) {
+            throw new Exception("Person not included in response. find."+name);
         } 
-        return persons[0].getId();
+        return person.getId();
     }
         
     private long getBankId(String bankName)
-            throws AccountLogicException, UnsupportedEncodingException {
+            throws Exception, UnsupportedEncodingException {
+        if (bankName.equals("")) {
+            throw new Exception("bankName can't be blank");
+        }
         String name;
         try {
             name = URLEncoder.encode(bankName,"UTF-8");
         }
         catch (UnsupportedEncodingException e) {
-            System.out.println(e);
             throw e;
         }
         String answerJson = http.get("http://localhost:8070/find." + name);
-        BankDTO[] persons = ajs.fromJson(answerJson, BankDTO[].class);
-        if (persons.length == 0) {
-            throw new AccountLogicException("Bank not included in response.");
+        BankDTO[] banks = ajs.fromJson(answerJson, BankDTO[].class);
+        if (banks == null || banks.length == 0) {
+            throw new Exception("Bank not included in response.");
         } 
-        return persons[0].getId();
+        return banks[0].getId();
     }
 
     @Override
     public long create(String accountType, String personName, String bankName)
-            throws AccountLogicException, UnsupportedEncodingException, AccountDataException {
+            throws Exception, UnsupportedEncodingException {
         try {
            long personId = getPersonId(personName);
            long bankId = getBankId(bankName);
            
            return accountEntityFacade.create(accountType,bankId,personId);
-        }
-        catch (AccountDataException e) {
-            throw e;
-        }
-        catch (AccountLogicException e) {
-            throw e;
         } catch (UnsupportedEncodingException e) {
             throw e;
         } catch (Exception e) {
-            throw new AccountLogicException("Caught a exception e: " + e);
+            throw new Exception("Horrible catch all Exception: " + e);
         }
     }
 
     @Override
     public List<Account> find(String personName) 
-    throws AccountLogicException, UnsupportedEncodingException {        
+    throws Exception, UnsupportedEncodingException {        
         try {
             long id = getPersonId(personName);
             System.out.println("=====> Found personId: "+id);
             return accountEntityFacade.find(id);
-        } catch (AccountLogicException e) {
-            System.out.println(e);
-            throw e;
-        } catch (UnsupportedEncodingException e) {
+        } catch (Exception e) {
             throw e;
         }
     }
@@ -112,12 +126,12 @@ public class AccountLogicFacadeImpl implements AccountLogicFacade {
     }
 
     @Override
-    public List<Transaction> transactions(long id) {
+    public List<Transaction> transactions(long id) throws Exception {
         try {
             return accountEntityFacade.transactions(id);
         } catch (Exception e) {
-            System.out.println(e);
+            throw e;
         }
-        return new ArrayList<Transaction>();
+        // return new ArrayList<Transaction>();
     }
 }

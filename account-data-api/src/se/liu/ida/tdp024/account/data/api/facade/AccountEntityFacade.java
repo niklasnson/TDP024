@@ -9,5 +9,5 @@ public interface AccountEntityFacade {
     public List<Account> find(long id);
     public String debit(long id, int amount);
     public String credit(long id, int amount);
-    public List<Transaction> transactions (long id) throws Exception; // TODO: fix this exception class
+    public List<Transaction> transactions (long id) throws Exception;
 }

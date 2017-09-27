@@ -33,7 +33,7 @@ public class TransactionEntityFacadeTest {
     }
 
     @Test
-    public void testCreate() {
+    public void testCreate() throws Exception {
         int amount = 100;
         String type = "DEBIT";
         Date date = new Date();
@@ -47,7 +47,7 @@ public class TransactionEntityFacadeTest {
     }
     
     @Test
-    public void testFind() {
+    public void testFind()  throws Exception {
         int amount = 100;
         String type = "DEBIT";
         Date date = new Date();

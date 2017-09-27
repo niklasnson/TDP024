@@ -12,7 +12,6 @@ import se.liu.ida.tdp024.account.data.api.entity.Transaction;
 import se.liu.ida.tdp024.account.data.api.facade.AccountEntityFacade;
 import se.liu.ida.tdp024.account.data.api.facade.TransactionEntityFacade;
 import se.liu.ida.tdp024.account.data.api.util.StorageFacade;
-import se.liu.ida.tdp024.account.data.impl.db.entity.AccountDataException;
 import se.liu.ida.tdp024.account.data.impl.db.facade.AccountEntityFacadeDB;
 import se.liu.ida.tdp024.account.data.impl.db.facade.TransactionEntityFacadeDB;
 import se.liu.ida.tdp024.account.data.impl.db.util.StorageFacadeDB;
@@ -30,7 +29,7 @@ public class AccountEntityFacadeTest {
     }
 
     @Test
-    public void testCreate() {
+    public void testCreate() throws Exception {
         long id = accountEntityFacade.create("CHECK",1,2);
         Assert.assertEquals(1,id);
         id = accountEntityFacade.create("CHECK",1,1);
@@ -38,7 +37,7 @@ public class AccountEntityFacadeTest {
     }
     
     @Test 
-    public void testFind() {
+    public void testFind()  throws Exception {
         accountEntityFacade.create("CHECK",1,2);
         accountEntityFacade.create("CHECK",1,1);
         accountEntityFacade.create("CHECK",1,3);
@@ -54,7 +53,7 @@ public class AccountEntityFacadeTest {
     }
     
     @Test
-    public void testDebit() {
+    public void testDebit()  throws Exception {
         long id1 = accountEntityFacade.create("CHECK",1,1);
         int amount = 100;
         // Removing imaginary moneys.
@@ -95,7 +94,7 @@ public class AccountEntityFacadeTest {
     }
     
     @Test
-    public void testCredit() {
+    public void testCredit()  throws Exception {
         long id1 = accountEntityFacade.create("CHECK",1,1);
         int amount = 100;
         // Adding easy moneys.
@@ -127,7 +126,7 @@ public class AccountEntityFacadeTest {
     }
     
     @Test
-    public void testDebitTransaction() {
+    public void testDebitTransaction()  throws Exception {
         // When performing a debit, one transaction should be created
         long id1 = accountEntityFacade.create("CHECK",1,1);
         int amount = 100;
@@ -166,7 +165,7 @@ public class AccountEntityFacadeTest {
     }
     
     @Test
-    public void testCreditTransaction() {
+    public void testCreditTransaction() throws Exception  {
         // When performing a debit, one transaction should be created
         long id1 = accountEntityFacade.create("CHECK",1,1);
         int amount = 100;
@@ -197,7 +196,7 @@ public class AccountEntityFacadeTest {
     
     
     @Test
-    public void testTransactions() {
+    public void testTransactions() throws Exception  {
         int amount = 100;
         String type = "DEBIT";
         Date date = new Date();

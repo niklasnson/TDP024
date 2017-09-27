@@ -13,7 +13,7 @@
 ActiveRecord::Schema.define(version: 20170905083909) do
 
   create_table "logs", force: :cascade do |t|
-    t.integer "level"
+    t.string "severity"
     t.string "short_desc"
     t.string "long_desc"
     t.string "timestamp"

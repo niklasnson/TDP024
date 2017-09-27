@@ -24,16 +24,16 @@ public class TransactionTest {
 
 
         {
-            String name = "Marcus Bendtsen";
+            String person = "3";
             String bank = "SWEDBANK";
             String accountType = "SAVINGS";
-            String response = httpHelper.get(FinalConstants.ENDPOINT + "account/create/", "name", name, "bank", bank, "accounttype", accountType);
+            String response = httpHelper.get(FinalConstants.ENDPOINT + "account/create/", "person", person, "bank", bank, "accounttype", accountType);
             Assert.assertEquals("OK", response);
         }
 
 
 
-        String accountJson = httpHelper.get(FinalConstants.ENDPOINT + "account/find/name", "name", "Marcus Bendtsen");
+        String accountJson = httpHelper.get(FinalConstants.ENDPOINT + "account/find/person", "person", "3");
         AccountDTO[] accountDTos = jsonSerializer.fromJson(accountJson, AccountDTO[].class);
 
         AccountDTO accountDTO = accountDTos[0];
@@ -110,15 +110,15 @@ public class TransactionTest {
     public void testDebitConcurrency() {
 
         {
-            String name = "Jakob Pogulis";
+            String person = "1";
             String bank = "SWEDBANK";
             String accountType = "SAVINGS";
-            String response = httpHelper.get(FinalConstants.ENDPOINT + "account/create/", "name", name, "bank", bank, "accounttype", accountType);
+            String response = httpHelper.get(FinalConstants.ENDPOINT + "account/create/", "person", person, "bank", bank, "accounttype", accountType);
             Assert.assertEquals("OK", response);
         }
 
 
-        String accountJson = httpHelper.get(FinalConstants.ENDPOINT + "account/find/name", "name", "Jakob Pogulis");
+        String accountJson = httpHelper.get(FinalConstants.ENDPOINT + "account/find/person", "person", "1");
         AccountDTO[] accountDTos = jsonSerializer.fromJson(accountJson, AccountDTO[].class);
         final AccountDTO accountDTO = accountDTos[0];
 
@@ -159,7 +159,7 @@ public class TransactionTest {
 
         //Now check the balance of the account
         {
-            String checkJson = httpHelper.get(FinalConstants.ENDPOINT + "account/find/name", "name", "Jakob Pogulis");
+            String checkJson = httpHelper.get(FinalConstants.ENDPOINT + "account/find/person", "person", "1");
             AccountDTO refreshedAccountDTO = jsonSerializer.fromJson(checkJson, AccountDTO[].class)[0];
             Assert.assertEquals(0, refreshedAccountDTO.getHoldings());
         }
@@ -171,15 +171,15 @@ public class TransactionTest {
     public void testCreditConcurrency() {
         
          {
-            String name = "Zorro";
+            String person = "4";
             String bank = "SWEDBANK";
             String accountType = "SAVINGS";
-            String response = httpHelper.get(FinalConstants.ENDPOINT + "account/create/", "name", name, "bank", bank, "accounttype", accountType);
+            String response = httpHelper.get(FinalConstants.ENDPOINT + "account/create/", "person", person, "bank", bank, "accounttype", accountType);
             Assert.assertEquals("OK", response);
         }
 
 
-        String accountJson = httpHelper.get(FinalConstants.ENDPOINT + "account/find/name", "name", "Zorro");
+        String accountJson = httpHelper.get(FinalConstants.ENDPOINT + "account/find/person", "person", "4");
         AccountDTO[] accountDTos = jsonSerializer.fromJson(accountJson, AccountDTO[].class);
         final AccountDTO accountDTO = accountDTos[0];
 
@@ -217,7 +217,7 @@ public class TransactionTest {
 
         //Now check the balance of the account
         {
-            String checkJson = httpHelper.get(FinalConstants.ENDPOINT + "account/find/name", "name", "Zorro");
+            String checkJson = httpHelper.get(FinalConstants.ENDPOINT + "account/find/person", "person", "4");
             AccountDTO refreshedAccountDTO = jsonSerializer.fromJson(checkJson, AccountDTO[].class)[0];
             Assert.assertEquals(size * amount, refreshedAccountDTO.getHoldings());
         }

@@ -1,6 +1,7 @@
 package se.liu.ida.tdp024.account.rest.service;
 
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.List;
 import javax.ws.rs.Path;
 import javax.ws.rs.GET;
@@ -10,7 +11,6 @@ import se.liu.ida.tdp024.account.data.api.entity.Account;
 import se.liu.ida.tdp024.account.data.api.entity.Transaction;
 import se.liu.ida.tdp024.account.data.impl.db.facade.AccountEntityFacadeDB;
 import se.liu.ida.tdp024.account.logic.api.facade.AccountLogicFacade;
-import se.liu.ida.tdp024.account.logic.impl.facade.AccountLogicException;
 import se.liu.ida.tdp024.account.logic.impl.facade.AccountLogicFacadeImpl;
 import se.liu.ida.tdp024.account.util.json.AccountJsonSerializer;
 import se.liu.ida.tdp024.account.util.json.AccountJsonSerializerImpl;
@@ -25,22 +25,18 @@ public class AccountService {
     @GET
     @Path("/create")
     public Response create(
-        @QueryParam("name") String personName,
+        @QueryParam("person") String personName,
         @QueryParam("bank") String bankName,
         @QueryParam("accounttype") String accountType) {
 
         try {
             long id = accountLogicFacade.create(accountType,personName,bankName);
-            System.out.println("====> " + id);
             return Response.ok().entity("OK").build();
-        } catch (AccountLogicException e) {
-            return Response.serverError().entity("FAILED").build();
         } catch (UnsupportedEncodingException e) {
-            return Response.serverError().entity("FAILED").build();
+            return Response.ok().entity("FAILED").build();
         } catch (Exception ex) {
-            return Response.serverError().entity("FAILED").build();
+            return Response.ok().entity("FAILED").build();
         }
-        
     }
     
     @GET
@@ -48,14 +44,11 @@ public class AccountService {
     public Response find(@QueryParam("person") String person) {
         try {
             List<Account> accounts = accountLogicFacade.find(person);
-            System.out.println("====> account.size: " + accounts.size());
             return Response.ok().entity(ajs.toJson(accounts)).build();
-        } catch (AccountLogicException e) {
-            return Response.serverError().entity("[]").build();
         } catch (UnsupportedEncodingException e) {
-            return Response.serverError().entity("[]").build();
+            return Response.ok().entity("[]").build();
         } catch (Exception ex) {
-            return Response.serverError().entity("[]").build();
+            return Response.ok().entity("[]").build();
         }
     }
     
@@ -78,10 +71,16 @@ public class AccountService {
     }
     @GET
     @Path("/transactions")
-    public Response transactions(
+    public Response transactions (
             @QueryParam("id") long id) {
+        try {
             List<Transaction> transactions = accountLogicFacade.transactions(id);
             return Response.ok().entity(ajs.toJson(transactions)).build();
+        }
+        catch (Exception e) {
+            return Response.ok().entity(ajs.toJson(new ArrayList<Transaction>())).build();
+        }
     }
+    
     
 }
